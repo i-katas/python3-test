@@ -2,7 +2,7 @@
 
 test:
 	-@tput reset
-	@python3 setup.py test
+	@python3 -OO setup.py test
 
 clean:
 	@find . -name __pycache__ -type d | xargs rm -rf
