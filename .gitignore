@@ -1,0 +1,13 @@
+.idea
+*.iml
+out
+build
+dist
+.eggs
+*.egg-info
+__pycache__
+
+*.swp
+*.swo
+/venv
+
