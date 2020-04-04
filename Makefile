@@ -1,8 +1,10 @@
+SHELL=bash
 .PHONY: test
+#PY_FLAGS=-OO #-OO makes the pytest.raises work incorrectly
 
 test:
 	-@tput reset
-	@python3 -OO setup.py test
+	@source .bashrc && python3 ${PY_FLAGS} setup.py test
 
 clean:
 	@find . -name __pycache__ -type d | xargs rm -rf
