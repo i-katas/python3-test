@@ -12,3 +12,4 @@ class mock_stderr():
         del self._stderr
 
 __path__.append('foo')
+
