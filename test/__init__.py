@@ -11,3 +11,4 @@ class mock_stderr():
         sys.stderr = self._stderr
         del self._stderr
 
+__path__.append('foo')
