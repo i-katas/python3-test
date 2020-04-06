@@ -55,3 +55,26 @@ def test_package_loaded_when_import_module_from_it():
     from .fixtures import stub
     
     assert modules[stub.__package__] and modules[stub.__name__]
+
+
+def test_find_entry_path_from_path_hooks():
+    from pytest import raises
+    import sys, importlib
+
+    repo = 'http://example.com/libs'
+    searched = []
+    def find_path_entry_finder(path):
+        searched.append(path)
+        raise ImportError("No service")
+    sys.path.append(repo)
+    sys.path_hooks.append(find_path_entry_finder)
+
+    assert not searched
+    assert repo not in sys.path_importer_cache, f'finder for {repr(repo)} is cached'
+    with raises(ImportError):
+        import fib
+
+    assert searched == [repo]
+    assert repo in sys.path_importer_cache, f'finder for {repr(repo)} is not cached'
+    assert sys.path_importer_cache[repo] is None
+
