@@ -1,5 +1,7 @@
 from typing import SupportsInt
+
 from pytest import raises
+
 from . import mock_stderr
 
 
@@ -46,6 +48,7 @@ def test__le__operator():
     """
     @ref https://docs.python.org/3/reference/datamodel.html#object.__lt__
     """
+
     class Count:
         def __init__(self, value=0):
             self._value = value
@@ -60,6 +63,7 @@ def test__int__like_objects():
     """
     @ref https://docs.python.org/3/reference/datamodel.html#object.__int__
     """
+
     class Count():
         def __init__(self, value=0):
             self._value = value
@@ -75,6 +79,7 @@ def test_disable_hash_by_set__hash__to_None():
     """
     @ref https://docs.python.org/3/reference/datamodel.html#object.__hash__
     """
+
     class Unhashable:
         __hash__ = None
 
@@ -86,7 +91,9 @@ def test_str_and_bytes_hash_take_a_random_salt_per_processor():
     """
     @ref https://docs.python.org/3/reference/datamodel.html#object.__hash__
     """
-    import sys, subprocess
+    import sys
+    import subprocess
+
     def proc_hash(s):
         command = f'{sys.executable} -c "print(hash({repr(s)}))"'
         return int(subprocess.check_output(command, shell=True))
@@ -102,15 +109,15 @@ def test__getattribute__will_be_bypassed_with_implicit_special_method_lookup():
     @ref https://docs.python.org/3/reference/datamodel.html#special-lookup
     """
     visited = []
+
     class Context:
-        def __getattribute__(self, name:str):
+        def __getattribute__(self, name: str):
             visited.append((self, name))
             return object.__getattribute__(self, name)
-    
+
     context = Context()
 
     assert context.__str__() and visited[:] == [(context, '__str__')]
 
     del visited[:]
     assert str(context) and not visited
-    

@@ -1,19 +1,23 @@
 from pytest import raises
 
+
 def test__init_subclass__called_when_subclass_defined():
     class NoSubclass:
         __subclasses__ = []
+
         def __init_subclass__(cls):
             cls.__subclasses__.append(cls)
 
     class Superclass:
         __subclasses__ = []
+
         def __init_subclass__(cls):
             cls.__subclasses__.append(cls)
-    
+
     assert Superclass.__subclasses__ == []
 
-    class Subclass(Superclass): pass
+    class Subclass(Superclass):
+        pass
 
     assert NoSubclass.__subclasses__ == []
     assert Superclass.__subclasses__ == [Subclass]

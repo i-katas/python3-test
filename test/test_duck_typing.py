@@ -8,7 +8,8 @@ class Consumer(Protocol[T]):
     __slots__ = ()
 
     @abstractmethod
-    def __accept__(self, value: T): pass
+    def __accept__(self, value: T):
+        pass
 
 
 def test_duck_type_checking():

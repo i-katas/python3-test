@@ -1,14 +1,16 @@
 def test_saves_all_attributes_in__dict__():
     class Type:
-        a:int = 1
+        a: int = 1
 
     assert Type.__annotations__ == {'a': int}
     assert Type.a == 1 and Type.a == Type.__dict__['a']
 
+
 def test_get_object_attrs_from__dict__and_then_class__dict__():
     class Class:
-        a:int = 1
-        b:int = 2
+        a: int = 1
+        b: int = 2
+
         def __init__(self):
             self.b, self.c = 3, 4
 
@@ -20,44 +22,50 @@ def test_get_object_attrs_from__dict__and_then_class__dict__():
 
 
 class NonDataDescriptor:
-    def __init__(self, *args): pass
-    def __get__(self, obj, obj_t): return 1
+    def __init__(self, *args):
+        pass
 
-def test_attr_access_overrided_by_descriptor_but_can_be_access_direct_by__dict__():
+    def __get__(self, obj, obj_t):
+        return 1
+
+
+def test_attr_access_overridden_by_descriptor_but_can_be_access_direct_by__dict__():
     class Class:
         @NonDataDescriptor
-        def value(): pass
+        def value(self):
+            pass
 
     obj = Class()
 
-    assert type(Class.__dict__['value']) is NonDataDescriptor 
+    assert type(Class.__dict__['value']) is NonDataDescriptor
     assert Class.value == 1 and Class.value is obj.value
 
 
 def test_non_data_descriptor_overrieded_by_instance__dict__():
     class Class:
         @NonDataDescriptor
-        def value(): pass
+        def value(self):
+            pass
 
     obj = Class()
 
-    obj.__dict__['value'] = 2 # equivalent to obj.value = 2
+    obj.__dict__['value'] = 2  # equivalent to obj.value = 2
 
     assert Class.value == 1 and obj.value == 2
 
 
 def test_data_descriptor_can_not_be_overrieded_by_instance__dict__():
     class DataDescriptor(NonDataDescriptor):
-        def __set__(*args): pass
+        def __set__(*args):
+            pass
 
     class Class:
         @DataDescriptor
-        def value(): pass
+        def value(self):
+            pass
 
     obj = Class()
 
-    obj.__dict__['value'] = 2 # equivalent to obj.value = 2
+    obj.__dict__['value'] = 2  # equivalent to obj.value = 2
 
     assert Class.value == 1 and obj.value == Class.value
-
-

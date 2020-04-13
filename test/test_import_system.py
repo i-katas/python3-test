@@ -35,9 +35,11 @@ def test_import_namespace_packages_for_package():
     assert name.value == 'namespace package'
     assert version.value == '1.0'
 
-from typing import Generator, Iterator
+
+from typing import Generator
+
+
 def namespace_paths() -> Generator[str, None, None]:
-    import sys
     from os import path
     namespaces = ['version1', 'version2']
     parent_path = path.dirname(__file__)
@@ -53,28 +55,29 @@ def test_modules_contain_packages_and_file_modules():
 def test_package_loaded_when_import_module_from_it():
     from sys import modules
     from .fixtures import stub
-    
+
     assert modules[stub.__package__] and modules[stub.__name__]
 
 
 def test_find_entry_path_from_path_hooks():
     from pytest import raises
-    import sys, importlib
+    import sys
 
     repo = 'http://example.com/libs'
     searched = []
+
     def find_path_entry_finder(path):
         searched.append(path)
         raise ImportError("No service")
+
     sys.path.append(repo)
     sys.path_hooks.append(find_path_entry_finder)
 
     assert not searched
     assert repo not in sys.path_importer_cache, f'finder for {repr(repo)} is cached'
     with raises(ImportError):
-        import fib
+        import fib  # noqa: F401
 
     assert searched == [repo]
     assert repo in sys.path_importer_cache, f'finder for {repr(repo)} is not cached'
     assert sys.path_importer_cache[repo] is None
-

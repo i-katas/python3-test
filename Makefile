@@ -14,9 +14,12 @@ test/cmath${SO_EXTENSION}: test/cmath.o
 	$(CXX) ${GCC_FLAGS} $< -o $@
 	rm $<
 
-test: test/cmath${SO_EXTENSION}
-	-@tput reset
+test: checkstyle test/cmath${SO_EXTENSION}
 	@source .bashrc && python3 ${PY_FLAGS} setup.py test
+
+checkstyle:
+	@-tput reset
+	@source .bashrc && flake8
 
 clean:
 	@find . -name __pycache__ -type d | xargs rm -rf

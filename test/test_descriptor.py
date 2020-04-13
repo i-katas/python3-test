@@ -82,13 +82,17 @@ class Item:
         self._name, self._qty = name, qty
 
     @property
-    def qty(self): return self._qty
+    def qty(self):
+        return self._qty
 
     @qty.deleter
-    def qty(self): del self._qty
+    def qty(self):
+        del self._qty
 
     @qty.setter
-    def qty(self, qty): self._qty = qty
+    def qty(self, qty):
+        self._qty = qty
 
     @property
-    def name(self): return self._name
+    def name(self):
+        return self._name
